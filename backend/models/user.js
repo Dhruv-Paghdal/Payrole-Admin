@@ -41,16 +41,16 @@ module.exports = {
             throw error;
         }
     }, 
-    findAll: async(query) => {
+    findAll: async(query, projection) => {
         try {
-            return await User.find(query)
+            return await User.find(query, projection)
         } catch (error) {
             throw error;
         }
     },
-    findOne: async(query) => {
+    findOne: async(query, projection) => {
         try {
-            return await User.findOne(query);
+            return await User.findOne(query, projection);
         } catch (error) {
             throw error;
         }

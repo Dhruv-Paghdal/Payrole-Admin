@@ -1,8 +1,17 @@
 const clientRouter = require('express').Router();
 const clientService = require("../services/clientService");
 const validation = require("../helpers/validation");
-const {checkSchema} = require('express-validator')
+const {checkSchema, query, param} = require('express-validator')
 const {check} = require('express-validator')
+
+clientRouter.get("/list", [
+    query('page').notEmpty().withMessage('Page value is requried').isInt().withMessage('Value must be Integer'), 
+    query('row').notEmpty().withMessage('Row value is requried').isInt().withMessage('Value must be Integer'),
+    query('sort').notEmpty().withMessage('Sort value is requried'),
+    query('filter').notEmpty().withMessage('Filter feild value is requried')
+], clientService.clientList);
+
+clientRouter.get("/:clientId/detail", param('clientId').notEmpty().withMessage('ClientId value is required'), clientService.clientDetail);
 
 clientRouter.post("/add",checkSchema(validation.addClient), [
     check('subscription_end').toDate(),
@@ -19,4 +28,7 @@ clientRouter.post("/add",checkSchema(validation.addClient), [
         return true
     })
 ], clientService.addClient);
+
+// clientRouter.put("/:clientId/changeStatus", clientService)
+// clientRouter.put("/:clientId/edit", clientService)
 module.exports = clientRouter;

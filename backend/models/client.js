@@ -63,16 +63,16 @@ module.exports = {
             throw error;
         }
     }, 
-    findAll: async(query) => {
+    findAll: async(query, projection) => {
         try {
-            return await Client.find(query)
+            return await Client.find(query, projection)
         } catch (error) {
             throw error;
         }
     },
-    findOne: async(query) => {
+    findOne: async(query, projection) => {
         try {
-            return await Client.findOne(query);
+            return await Client.findOne(query, projection);
         } catch (error) {
             throw error;
         }

@@ -22,6 +22,12 @@ const companySchema = new mongoose.Schema({
         type: String,
         require: true
     },
+    startDate: {
+        type: Date
+    },
+    endDate: {
+        type: Date
+    },
     mobile: {
         type: String
     },
@@ -71,16 +77,16 @@ module.exports = {
             throw error;
         }
     }, 
-    findAll: async(query) => {
+    findAll: async(query, projection) => {
         try {
-            return await Company.find(query)
+            return await Company.find(query, projection)
         } catch (error) {
             throw error;
         }
     },
-    findOne: async(query) => {
+    findOne: async(query, projection) => {
         try {
-            return await Company.findOne(query);
+            return await Company.findOne(query, projection);
         } catch (error) {
             throw error;
         }

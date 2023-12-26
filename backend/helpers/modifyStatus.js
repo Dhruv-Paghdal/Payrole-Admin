@@ -5,12 +5,21 @@ const changeStatus = async(id, status) => {
     const payload = {
         isActive: false
     }
-    if (status == "active") {
-        payload["isActive"] = true
-    }
-    const subscriptionStart = await Client.updateOne(id, payload) && await Company.updateMany({clientID: id}, payload);
+    switch (status) {
+        case "active":
+            payload["isActive"] = true;
+            break;
 
-    if (!subscriptionStart) {
+        case "inactive":
+            payload["isActive"] = false;
+            break;
+    
+        default:
+            payload["isActive"] = false;
+            break;
+    }
+    const statusChanged = await Client.updateOne(id, payload) && await Company.model.updateOne({clientID: id}, payload);
+    if (!statusChanged) {
         return false;
     }
     return true;
