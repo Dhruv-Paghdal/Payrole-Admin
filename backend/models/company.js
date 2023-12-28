@@ -28,6 +28,10 @@ const companySchema = new mongoose.Schema({
     endDate: {
         type: Date
     },
+    subscriptionHistory: {
+        type: [String],
+        default: []
+    },
     mobile: {
         type: String
     },
@@ -101,13 +105,6 @@ module.exports = {
     updateOne: async(id, payload) => {
         try {
             return await Company.updateOne({_id: new ObjectId(id)}, {$set:payload});
-        } catch (error) {
-            throw error;
-        }
-    }, 
-    deleteMany: async(query) => {
-        try {
-            return await Company.updateMany(query, {$set:{isDeleted: true}});
         } catch (error) {
             throw error;
         }

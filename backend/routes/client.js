@@ -29,6 +29,8 @@ clientRouter.post("/add",checkSchema(validation.addClient), [
     })
 ], clientService.addClient);
 
-// clientRouter.put("/:clientId/changeStatus", clientService)
-// clientRouter.put("/:clientId/edit", clientService)
+clientRouter.put("/:clientId/update", param('clientId').notEmpty().withMessage('ClientId value is required'), checkSchema(validation.updateClient), clientService.updateClient);
+
+clientRouter.put("/:clientId/delete", param('clientId').notEmpty().withMessage('ClientId value is required'), clientService.deleteClient);
+
 module.exports = clientRouter;

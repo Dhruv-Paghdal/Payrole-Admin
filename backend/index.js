@@ -17,9 +17,9 @@ app.use("/index", indexRoute);
 app.use(middleware.isAccessable(["super-admin"]));
 app.use("/client", clientRoute);
 
-// removeClientAdminCredCron();
-// startSubcriptionCron();
-// endSubcriptionCron();
+removeClientAdminCredCron();
+startSubcriptionCron();
+endSubcriptionCron();
 
 app.listen(PORT, ()=>{
     console.log(`App listing on http://localhost:${PORT}`)

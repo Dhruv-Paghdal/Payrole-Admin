@@ -69,13 +69,6 @@ module.exports = {
             throw error;
         }
     }, 
-    deleteMany: async(query) => {
-        try {
-            return await User.updateMany(query, {$set:{isDeleted: true}});
-        } catch (error) {
-            throw error;
-        }
-    }, 
     updateMany: async(query, payload) => {
         try {
             return await User.updateMany(query, {$set:payload});

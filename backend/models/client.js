@@ -38,6 +38,10 @@ const clientSchema = new mongoose.Schema({
         type: Date,
         required: true,
     },
+    subscriptionHistory: {
+        type: [String],
+        default: []
+    },
     companyAdminUsername:{
         type: String,
         required: true,
@@ -90,14 +94,7 @@ module.exports = {
         } catch (error) {
             throw error;
         }
-    }, 
-    deleteMany: async(query) => {
-        try {
-            return await Client.updateMany(query, {$set:{isDeleted: true}});
-        } catch (error) {
-            throw error;
-        }
-    }, 
+    },
     updateMany: async(query, payload) => {
         try {
             return await Client.updateMany(query, {$set:payload});

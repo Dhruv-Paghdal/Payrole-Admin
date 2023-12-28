@@ -6,7 +6,6 @@ const connectAdminDB = () => {
           useNewUrlParser: true,
           useUnifiedTopology: true
         });
-        // console.log("Bingo, DB connected successfully!!!!");
     } catch (error) {
         console.log("Opps, Error while connecting with DB!!!!");
         console.log(error);
@@ -19,7 +18,6 @@ const connectClientDB = () => {
           useNewUrlParser: true,
           useUnifiedTopology: true
         });
-        // console.log("Bingo, DB connected successfully!!!!");
     } catch (error) {
         console.log("Opps, Error while connecting with DB!!!!");
         console.log(error);
