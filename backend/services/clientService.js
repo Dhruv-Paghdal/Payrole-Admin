@@ -126,13 +126,21 @@ exports.addClient = async(req, res) => {
         if (!error.isEmpty()) {
             return res.status(400).json({staus:400, message: error.array(), data: ""})
         }
-        const conditions = {
+        const clientConditions = {
             isDeleted: false,
-            companyEmail: req.body.company_email
+            companyEmail: req.body.company_email,
         }
-        const companyExist = await Client.findOne(conditions);
+        const companyConditions = {
+            isDeleted: false,
+            userName: req.body.company_admin_username,
+        }
+        const companyExist = await Client.findOne(clientConditions);
+        const companyCredExist = await Company.findOne(companyConditions);
         if (companyExist) {
             return res.status(400).json({staus:400, message: "Client email is already in use", data: ""})  
+        }
+        if (companyCredExist) {
+            return res.status(400).json({staus:400, message: "Client credentials is already in use", data: ""})  
         }
         const companyAdminData = {
             userName: req.body.company_admin_username,
