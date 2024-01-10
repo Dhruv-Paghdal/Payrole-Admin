@@ -60,6 +60,10 @@ const companySchema = new mongoose.Schema({
             type: String,
         }
     },
+    isAdmin: {
+        type: Boolean,
+        default: false
+    },
     isActive: {
         type: Boolean,
         default: false

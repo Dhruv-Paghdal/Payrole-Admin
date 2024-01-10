@@ -159,7 +159,8 @@ exports.addClient = async(req, res) => {
             subscriptionEnd: req.body.subscription_end,
             companyAdminUsername: req.body.company_admin_username,
             companyAdminPassword: req.body.company_admin_password,
-            subscriptionHistory: [moment(req.body.subscription_start).format(dateFormat) + " TO " + moment(req.body.subscription_end).format(dateFormat)]
+            subscriptionHistory: [moment(req.body.subscription_start).format(dateFormat) + " TO " + moment(req.body.subscription_end).format(dateFormat)],
+            isAdmin: true
         }
         const newClient = await Client.insertOne(clientData); 
         const updateCompany = await Company.updateOne(company._id, {clientID: newClient._id, startDate: newClient.subscriptionStart, endDate: newClient.subscriptionEnd, subscriptionHistory: clientData.subscriptionHistory});
