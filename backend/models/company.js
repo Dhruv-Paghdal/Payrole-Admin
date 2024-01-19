@@ -39,17 +39,26 @@ const companySchema = new mongoose.Schema({
         type: String
     },
     companyAddress: {
-        addressLine1: {
+        addressLine: {
             type: String,
         },
-        addressLine2: {
+        landmark: {
             type: String,
         },
         city: {
             type: String,
+        },
+        state: {
+            type: String,
+        },
+        country: {
+            type: String,
+        },
+        zipCode: {
+            type: Number,
         }
     },
-    ownerDetail:{
+    ownerDetail: [{
         name: {
             type: String,
         },
@@ -59,7 +68,7 @@ const companySchema = new mongoose.Schema({
         email: {
             type: String,
         }
-    },
+    }],
     isAdmin: {
         type: Boolean,
         default: false

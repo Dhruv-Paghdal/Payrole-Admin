@@ -10,7 +10,7 @@ const removeCred = async() => {
                   $dateSubtract: {
                     startDate: new Date(),
                     unit: "day",
-                    amount: 1,
+                    amount: 7,
                   },
                 },
               },
