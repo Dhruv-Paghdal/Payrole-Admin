@@ -1,0 +1,47 @@
+.sidebar{
+    background-color: #FFFFFF;
+    height: 100vh;
+}
+
+.sidebarList{
+    height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.active{
+    color: #FFFFFF !important;
+    background-color: #00ABE4 !important;
+    border-radius: 0.8rem !important;
+}
+
+.active>div{
+    color: #FFFFFF !important;
+}
+
+.item{
+    text-align: start;
+    border: 0px transparent !important;
+}
+
+.item>div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    color: #6c8080;
+    font-size: 16px;
+    font-weight: 450;
+}
+
+.item>div:hover{
+    color: #00ABE4;
+    cursor: pointer;
+}
+
+.item>div>p{
+    margin: 0%;
+    padding: 0%;
+}
+

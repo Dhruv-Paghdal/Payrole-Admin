@@ -1,0 +1,71 @@
+.tabelSection{
+    overflow-x: hidden;
+    height: 65vh;
+    font-size: 16px !important;
+}
+
+header, header>div{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header>div>p{
+    font-size: 14px !important;
+    color: #6c8080;
+}
+
+th, td{
+    text-align: start !important;
+}
+
+th{
+    font-weight: 500 !important;
+}
+
+.table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
+    background-color: #E9F1FA !important;
+}
+
+footer>div {
+    display: flex;
+    justify-content: end;
+}
+
+.active>.page-link{
+    border-radius: 0px !important;
+    background-color: #00ABE4 !important;
+    border-color: #00ABE4 !important;
+    color: #FFFFFF !important;
+}
+
+.page-item{
+    margin-left: 5px;
+}
+
+.page-link:focus{
+    outline: 0;
+    background-color: transparent;
+    box-shadow: 0px 0px 0.25rem #EFFAFD !important;
+}
+
+.page-link{
+    font-size: 14px !important;
+    color: black !important;
+}
+
+.action{
+    display: flex;
+    justify-content: space-between;
+}
+
+.edit:hover{
+    color: #00ABE4 !important;
+    cursor: pointer;
+}
+
+.delete:hover{
+    color:rgb(255, 28, 28) !important;
+    cursor: pointer;
+}

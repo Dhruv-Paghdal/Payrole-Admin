@@ -1,0 +1,12 @@
+.modal-title{
+    font-weight: 600 !important;
+    font-size: 1.25rem !important;
+}
+
+.modal-body{
+    font-size: 14px !important;
+}
+
+.modal-backdrop.show{
+    opacity: 0.9 !important;
+}

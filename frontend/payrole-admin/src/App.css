@@ -1,0 +1,46 @@
+body{
+  font-family:Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+}
+
+.App {
+  text-align: center;
+  height: 100vh;
+  width: auto;
+  background-color: #EFFAFD;
+}
+
+.submitButton {
+  background-color: #00ABE4 !important;
+  border-color: #00ABE4 !important;
+}
+
+.submitButton:hover {
+  background-color: #019bce !important;
+  border-color: #019bce !important;
+}
+
+.cancelButton {
+  background-color: #dc3545 !important;
+  border-color: #dc3545 !important;
+}
+
+.cancelButton:hover {
+  background-color: #bb2d3b !important;
+  border-color: #bb2d3b !important;
+}
+
+input[type="text"]:focus, input[type="password"]:focus, input[type="date"]:focus, input[type="email"]:focus, input[type="checkbox"]:focus, .form-select:focus{
+  outline: 0;
+  /* background-color: transparent; */
+  box-shadow: 0px 0px 0.25rem #EFFAFD !important;
+}
+/* Light-blue E9F1FA
+8AAAE5
+CADCFC
+Blue-grey E5EDF1
+Pale-blue EFFAFD */
+
+/* Light blue (#E9F1FA), bright blue (#00ABE4), white (#FFFFFF) */
+/* #8AAAE5, #FFFFFF, #CADCFC */
+/* Blue-grey (#96C2DB, #E5EDF1), white (#FFFFF) */
+/* Pale blue (#EFFAFD), royal blue (#4A8BDF), */
