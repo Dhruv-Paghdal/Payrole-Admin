@@ -1,4 +1,5 @@
 require('dotenv').config();
+const cros = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
 const services = require('./services/databaseService');
@@ -8,6 +9,8 @@ const middleware = require('./middleware/userType');
 const {removeClientAdminCredCron, startSubcriptionCron, endSubcriptionCron} = require('./helpers/crons');
 const PORT = process.env.APP_PORT;
 const app = express();
+
+app.use(cros());
 
 app.use(bodyParser.urlencoded({
     extended: false
