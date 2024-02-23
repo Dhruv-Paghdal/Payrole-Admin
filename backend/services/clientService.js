@@ -28,9 +28,22 @@ exports.clientList = async(req, res) => {
                 sort = 1;
                 break;
         }
+        const countQuery = [{
+            $group: {
+                _id: null,
+                totalCount: {
+                    $sum: {
+                        $cond: [{$and: []}, 1, 0]
+                    }
+                }
+            }
+        }]
         switch (req.query.filter) {
             case "ACTIVE":
                 conditions["isActive"] = true;
+                countQuery[0].$group.totalCount.$sum.$cond[0].$and.push({
+                    $eq: ["$isActive", true]
+                })
                 break;
 
             case "INACTIVE":
@@ -38,6 +51,11 @@ exports.clientList = async(req, res) => {
                 conditions["subscriptionStart"] = {
                     "$gt": new Date()
                 }
+                countQuery[0].$group.totalCount.$sum.$cond[0].$and.push({
+                    $eq: ["$isActive", false]
+                }, {
+                    $gt: ["$subscriptionStart", new Date()]
+                })
                 break;
                 
             case "EXPIRED":
@@ -45,20 +63,38 @@ exports.clientList = async(req, res) => {
                 conditions["subscriptionStart"] = {
                     "$lt": new Date()
                 }
+                countQuery[0].$group.totalCount.$sum.$cond[0].$and.push({
+                    $eq: ["$isActive", false]
+                }, {
+                    $lt: ["$subscriptionStart", new Date()]
+                })
                 break;
 
             case "DELETED":
                 conditions["isActive"] = false;
                 conditions["isDeleted"] = true
+                countQuery[0].$group.totalCount.$sum.$cond[0].$and.push({
+                    $eq: ["$isActive", false]
+                }, {
+                    $eq: ["$isDeleted", true]
+                })
                 break;    
 
             default:
                 conditions["isActive"] = true;
+                countQuery[0].$group.totalCount.$sum.$cond[0].$and.push({
+                    $eq: ["$isActive", true]
+                })
                 break;
+        }
+        const totalCount = await Client.aggregate(countQuery);
+        if(totalCount[0].totalCount == 0) {
+            return res.status(200).json({status:200, message: "No Client list", data: []})   
         }
         const row = req.query.row > 0 ? parseInt(req.query.row) : 5;
         const page = req.query.page > 0 ? parseInt(req.query.page) : 1;
         const offset = (page-1)*row;
+        const totalPage = Math.ceil(totalCount[0].totalCount/row);
         const pipeline = [{
             $match: conditions
         }, {
@@ -80,10 +116,10 @@ exports.clientList = async(req, res) => {
             }
         }]
         const clients = await Client.aggregate(pipeline);
-        if (!clients) {
-            return res.status(400).json({staus:400, message: "Error while getting client list", data: ""})  
+        if (!clients.length) {
+            return res.status(400).json({staus:200, message: "No client List", data: clients})  
         }
-        return res.status(200).json({staus: 200, message: "Client list successful", data: clients})
+        return res.status(200).json({staus: 200, message: "Client list successful", data: {page: page.toString()+" of "+ totalPage.toString(), list:clients}})
     } catch (error) {
         console.log(error); 
         return res.status(400).json({staus:400, message: "Error while getting client list", data: ""})
@@ -107,7 +143,9 @@ exports.clientDetail = async(req, res) => {
             isActive: 1,
             subscriptionStart: 1,
             subscriptionEnd: 1,
-            subscriptionHistory: 1
+            subscriptionHistory: 1,
+            companyAdminUsername: 1,
+            companyAdminPassword: 1
         }
         const client = await Client.findOne(query, projection);
         if (!client) {
@@ -193,27 +231,35 @@ exports.updateClient = async (req, res) => {
         if (!clientExist) {
             return res.status(400).json({staus:400, message: "Error while getting client detail", data: ""})  
         }
-        const payload = {
-            "companyName": req.body.company_name,
-            "companyEmail": req.body.company_email,
-            "compnayMobile": req.body.compnay_mobile,
-            "subscriptionStart": req.body.subscription_start,
-            "subscriptionEnd": req.body.subscription_end,
-            "isActive": req.body.status
+        const payload = {};
+        const companyPayload = {};
+        if(req.body.status) {
+            payload["isActive"] = req.body.status;
+            companyPayload["isActive"] = req.body.status;
         }
-        const existingDate = moment(clientExist.subscriptionStart).format(dateFormat) + "/" + moment(clientExist.subscriptionEnd).format(dateFormat);
-        const payloadDate = moment(req.body.subscription_start).format(dateFormat) + "/" + moment(req.body.subscription_end).format(dateFormat);
-        const subscriptionAry = clientExist.subscriptionHistory;
-        if (existingDate !== payloadDate) {
-            if (moment(req.body.subscription_start).format(dateFormat) == moment().format(dateFormat)) {
-                payload["isActive"] = true
+        else if(req.body.subscription_start && req.body.subscription_end) {
+            payload["subscriptionStart"] = req.body.subscription_start;
+            payload["subscriptionEnd"] = req.body.subscription_end;
+            companyPayload["startDate"] = req.body.subscription_start;
+            companyPayload["endDate"] = req.body.subscription_end;
+            const existingDate = moment(clientExist.subscriptionStart).format(dateFormat) + "/" + moment(clientExist.subscriptionEnd).format(dateFormat);
+            const payloadDate = moment(req.body.subscription_start).format(dateFormat) + "/" + moment(req.body.subscription_end).format(dateFormat);
+            const subscriptionAry = clientExist.subscriptionHistory;
+            if (existingDate !== payloadDate) {
+                if (moment(req.body.subscription_start).format(dateFormat) == moment().format(dateFormat)) {
+                    payload["isActive"] = true
+                }
+                const newSubscription =  moment(req.body.subscription_start).format(dateFormat) + " TO " + moment(req.body.subscription_end).format(dateFormat)
+                subscriptionAry.push(newSubscription);
             }
-            const newSubscription =  moment(req.body.subscription_start).format(dateFormat) + " TO " + moment(req.body.subscription_end).format(dateFormat)
-            subscriptionAry.push(newSubscription);
+            payload["subscriptionHistory"] = subscriptionAry;
+            companyPayload["subscriptionHistory"] = subscriptionAry;
         }
-        payload["subscriptionHistory"] = subscriptionAry;
+        else{
+            return res.status(400).json({staus:400, message: "Error while updating client detail", data: ""})  
+        }
         const client = await Client.updateOne(req.params.clientId, payload);
-        const company = await Company.updateOne(clientExist.companyAdmin, {isActive: payload.isActive, endDate: payload.subscriptionEnd, startDate: payload.subscriptionStart, subscriptionHistory: payload.subscriptionHistory});
+        const company = await Company.updateOne(clientExist.companyAdmin, companyPayload);
         if (!client || !company) {
             return res.status(400).json({staus:400, message: "Error while updating client detail", data: ""})  
         }

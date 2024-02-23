@@ -11,6 +11,7 @@ const removeCred = async() => {
                     startDate: new Date(),
                     unit: "day",
                     amount: 7,
+                    timezone: "Asia/Kolkata"
                   },
                 },
               },

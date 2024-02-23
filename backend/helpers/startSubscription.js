@@ -20,6 +20,7 @@ const startSubscription = async() => {
               todayDatePart: {
                 $dateToParts: {
                   date: new Date(),
+                  timezone: "Asia/Kolkata"
                 },
               },
             },
@@ -57,7 +58,7 @@ const startSubscription = async() => {
         },
         {
               $project: {
-                  _id: 1
+                  _id: 1,
               }
         }
     ];

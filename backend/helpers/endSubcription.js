@@ -20,6 +20,7 @@ const endSubcription = async() => {
               todayDatePart: {
                 $dateToParts: {
                   date: new Date(),
+                  timezone: "Asia/Kolkata"
                 },
               },
             },

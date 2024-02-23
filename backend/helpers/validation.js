@@ -48,39 +48,4 @@ module.exports = {
             errorMessage: "Admin Password cannot be empty",
         }
     },
-    updateClient: {
-        "company_name":{
-            notEmpty: true,
-            errorMessage: "Company name cannot be empty",
-        },
-        "company_email": {
-            optional: {
-                checkFalsy: true,
-            },
-            isEmail: true,
-            errorMessage: "Enter a valid email address",
-        },
-        "compnay_mobile": {
-            notEmpty: true,
-            errorMessage: "Mobile number cannot be empty",
-            isLength:{
-                options: { min: 10 , max : 10},
-                errorMessage: "Enter a valid mobile number"   
-            },
-        },
-        "subscription_start": {
-            notEmpty: true,
-            isDate: true,
-            errorMessage: "Enter valid start date",
-        },
-        "subscription_end": {
-            notEmpty: true,
-            isDate: true,
-            errorMessage: "Enter valid end date",
-        },
-        "status": {
-            notEmpty: true,
-            errorMessage: "Company status name cannot be empty",
-        }
-    }
 }
