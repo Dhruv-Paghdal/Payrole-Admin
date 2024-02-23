@@ -119,7 +119,7 @@ exports.clientList = async(req, res) => {
         if (!clients.length) {
             return res.status(400).json({staus:200, message: "No client List", data: clients})  
         }
-        return res.status(200).json({staus: 200, message: "Client list successful", data: {page: page.toString()+" of "+ totalPage.toString(), list:clients}})
+        return res.status(200).json({staus: 200, message: "Client list successful", data: [{page: page.toString()+" of "+ totalPage.toString(), list:clients}]})
     } catch (error) {
         console.log(error); 
         return res.status(400).json({staus:400, message: "Error while getting client list", data: ""})
