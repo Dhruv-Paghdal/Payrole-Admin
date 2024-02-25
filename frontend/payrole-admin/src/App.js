@@ -5,11 +5,14 @@ import {
 import './App.css';
 import Login from "./components/login";
 import Layout from './components/layout';
+import ErrorPage from "./components/errorPage";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: <Login />,
+    errorElement: <ErrorPage />
+    
   },
   {
     path: "/dashboard",
@@ -20,7 +23,7 @@ const router = createBrowserRouter([
 function App() {
   return (
     <div className="App">
-      <RouterProvider router={router} />
+      <RouterProvider router={router}/>
     </div>
   );
 }

@@ -21,10 +21,9 @@
 
 .loginButtton {
     letter-spacing: 0.5px;
+    text-align: center !important;
     border-radius:  0.8rem !important;
     font-weight: 500 !important;
     padding-top: 8px !important;
-    padding-left: 60px !important;
-    padding-right: 60px !important;
-    padding-bottom: 8px !important;
+    padding-bottom: 8px !important; 
 }

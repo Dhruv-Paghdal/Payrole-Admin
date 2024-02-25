@@ -4,24 +4,27 @@
     font-size: 16px !important;
 }
 
-header, header>div{
+header>form, header>form>div{
     display: flex;
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
 }
 
-header>div>p{
+header>form>div>p{
     font-size: 14px !important;
     color: #6c8080;
 }
 
-th, td{
-    text-align: start !important;
-}
-
 th{
     font-weight: 500 !important;
+    text-align: start !important;
+
+}
+
+td{
+    font-size: 15px;
+    text-align: start !important;
 }
 
 .table-striped > tbody > tr:nth-child(2n+1) > td, .table-striped > tbody > tr:nth-child(2n+1) > th {
@@ -53,11 +56,6 @@ footer>div {
 .page-link{
     font-size: 14px !important;
     color: black !important;
-}
-
-.action{
-    display: flex;
-    justify-content: space-between;
 }
 
 .edit:hover{

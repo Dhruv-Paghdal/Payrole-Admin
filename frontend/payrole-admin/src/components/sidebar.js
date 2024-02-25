@@ -1,16 +1,11 @@
 import React from 'react';
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import './css/sidebar.css';
 import CardTitle from 'react-bootstrap/esm/CardTitle';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { BoxArrowLeft, Briefcase } from 'react-bootstrap-icons';
 
-const Sidebar = () => {
-  const navigate = useNavigate();
-
-  const handleLogout = () => {
-    navigate("/");
-  }
+const  Sidebar = () => {
   return (
     <div className='sidebar px-3'>
       <CardTitle className='text-start pt-2' style={{fontFamily: "sans-serif", fontWeight: 600}}>Payroll</CardTitle>
@@ -25,10 +20,9 @@ const Sidebar = () => {
           </ListGroup.Item>
         </ListGroup>
         <ListGroup>
-          <ListGroup.Item className='item' onClick={handleLogout}>
+          <ListGroup.Item className='item'>
             <div>
-              <BoxArrowLeft fontSize={16}/>
-              <p className='ps-2'>Logout</p>
+              <Link to="/" onClick={()=>{localStorage.removeItem("token")}}><BoxArrowLeft fontSize={16} /> Logout</Link>
             </div>
           </ListGroup.Item>
         </ListGroup>

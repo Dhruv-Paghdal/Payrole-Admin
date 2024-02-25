@@ -35,13 +35,7 @@
     font-weight: 450;
 }
 
-.item>div:hover{
-    color: #00ABE4;
-    cursor: pointer;
-}
-
 .item>div>p{
     margin: 0%;
     padding: 0%;
 }
-

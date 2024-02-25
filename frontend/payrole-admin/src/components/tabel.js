@@ -1,25 +1,33 @@
-import React,{useState} from 'react';
+import React,{useState, useEffect} from 'react';
 import Table from 'react-bootstrap/Table';
 import Form from 'react-bootstrap/Form';
+import Row from 'react-bootstrap/Row';
+import Col from 'react-bootstrap/Col';
 import Pagination from 'react-bootstrap/Pagination';
-import { PencilSquare, Trash3 } from 'react-bootstrap-icons';
+import { PencilSquare, Trash3, InfoCircle } from 'react-bootstrap-icons';
+import { useForm } from "react-hook-form"
 import './css/tabel.css';
 import Modal from './modal';
 
-const TabelSection = () => {
-  const deleted = false;
+const TabelSection = (props) => {
+  const { register, handleSubmit } = useForm();
+  const [data, setdata] = useState({});
   const [show, setShow] = useState(false);
   const [title, setTitle] = useState("Add Client");
   const [type, setType] = useState("add");
-  const handleShow = () => setShow(true);
-  const maxLimit = 10;
-    const [curr, set_Curr] = useState(1);
-    const pageChangeFunction = (p) => {
+  const handleModal = (params) => {
+    setShow(params.visibility);
+    setTitle(params.title); 
+    setType(params.type);
+    setdata(params.data);
+  };
+  const maxLimit = props.totalPage;
+  const pageChangeFunction = (p) => {
         if (p >= 1 && p <= maxLimit) {
-            set_Curr(p);
+            props.set_Curr(p);
         }
-    };
-    const showPageItemsFunction = () => {
+  };
+  const showPageItemsFunction = () => {
       const data = [];
       const numPage = 5;
       if (maxLimit <= numPage) {
@@ -27,7 +35,7 @@ const TabelSection = () => {
               data.push(
                   <Pagination.Item
                       key={i}
-                      active={i === curr}
+                      active={i === props.curr}
                       onClick={() => pageChangeFunction(i)}
                   >
                       {i}
@@ -35,8 +43,8 @@ const TabelSection = () => {
               );
           }
       } else {
-          const leftside = curr - numPage / 2 > 1;
-          const rightside = curr + numPage / 2 < maxLimit;
+          const leftside = props.curr - numPage / 2 > 1;
+          const rightside = props.curr + numPage / 2 < maxLimit;
           data.push(
               <Pagination.First
                   key="first"
@@ -46,19 +54,19 @@ const TabelSection = () => {
           data.push(
               <Pagination.Prev
                   key="prev"
-                  onClick={() => pageChangeFunction(curr - 1)}
+                  onClick={() => pageChangeFunction(props.curr - 1)}
               />
           );
           if (leftside) {
               data.push(<Pagination.Ellipsis key="leftEllipsis" />);
           }
-          const str = Math.max(1, Math.round(curr - numPage / 2));
-          const end = Math.min(maxLimit, Math.round(curr + numPage / 2));
+          const str = Math.max(1, Math.round(props.curr - numPage / 2));
+          const end = Math.min(maxLimit, Math.round(props.curr + numPage / 2));
           for (let i = str; i <= end; i++) {
               data.push(
                   <Pagination.Item
                       key={i}
-                      active={i === curr}
+                      active={i === props.curr}
                       onClick={() => pageChangeFunction(i)}
                   >
                       {i}
@@ -71,7 +79,7 @@ const TabelSection = () => {
           data.push(
               <Pagination.Next
                   key="next"
-                  onClick={() => pageChangeFunction(curr + 1)}
+                  onClick={() => pageChangeFunction(props.curr + 1)}
               />
           );
           data.push(
@@ -82,27 +90,43 @@ const TabelSection = () => {
           );
       }
       return data;
-    };  
+  };  
+  const onSubmit = (payload) => {
+    props.setQuery({
+      ...props.query,
+      row: payload.row,
+      sort: payload.sort
+    })
+  }
+
+  useEffect(()=>{
+    props.setQuery({
+      ...props.query,
+      page: props.curr
+    })
+  }, [props.curr])
   return (
     <div style={{height: "89vh", background: "#FFFFFF",borderRadius: "0.8rem"}} className='mx-3 p-3'>
       <header>
-        <div>
-          <p className='my-0 mx-2'>Show</p> 
-          <Form.Select aria-label="rows">
-            <option value="5">5</option>
-            <option value="10">10</option>
-            <option value="15">15</option>
-          </Form.Select>
-          <p className='my-0 mx-2'>Entries</p>
-        </div>
-        <div>
-          <p className='my-0 ms-2'>Company</p>
-          <p className='my-0 mx-2'>Name</p>
-          <Form.Select aria-label="sort">
-            <option value="asc">Asc</option>
-            <option value="desc">Desc</option>
-          </Form.Select>
-        </div>
+        <Form onChange={handleSubmit(onSubmit)}>
+          <div>
+            <p className='my-0 mx-2'>Show</p> 
+            <Form.Select aria-label="rows"  {...register('row')}>
+              <option value="5">5</option>
+              <option value="10">10</option>
+              <option value="15">15</option>
+            </Form.Select>
+            <p className='my-0 mx-2'>Entries</p>
+          </div>
+          <div>
+            <p className='my-0 ms-2'>Company</p>
+            <p className='my-0 mx-2'>Name</p>
+            <Form.Select aria-label="sort" {...register('sort')}>
+              <option value="asc">Asc</option>
+              <option value="desc">Desc</option>
+            </Form.Select>
+          </div>
+        </Form>
       </header>
       <hr />
       <div className='tabelSection'>
@@ -112,23 +136,79 @@ const TabelSection = () => {
             <th>Company Name</th>
             <th>Company Email</th>
             <th>Company Mobile</th>
-            <th>Subscription Start</th>
-            <th>Subscription End</th>
-            {!deleted && <th>Action</th>}
+            <th>Company Info</th>
+            {!props.deleted && <th>Action</th>}
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>HK Industries</td>
-            <td>hk@gmail.com</td>
-            <td>1234567890</td>
-            <td>11-01-2023</td>
-            <td>11-05-2023</td>
-           {!deleted && <td className='action'>
-              <p className='edit mb-0'><PencilSquare onClick={()=>{handleShow(); setTitle("Edit Client"); setType("active-edit")}} /></p>
-              <p className='delete mb-0'><Trash3 onClick={()=>{handleShow(); setTitle("Delete Client"); setType("delete")}}/></p>
-            </td>}
-          </tr>
+          {props.list.length ? props.list.map(element => {
+            return <tr key={element._id}>
+              <td>{element.companyName}</td>
+              <td>{element.companyEmail}</td>
+              <td>{element.compnayMobile}</td>
+              <td className='mb-0'><InfoCircle className='edit' onClick={()=>{
+                handleModal({
+                visibility: true,
+                title: "Client Info",
+                type: "info",
+                data: {
+                  _id: element._id
+                }
+              })}}/></td>
+            {!props.deleted && <td>
+                <Row>
+                  <Col>
+                    <p className='mb-0' ><PencilSquare className='edit' onClick={()=>{
+                      handleModal({
+                        visibility: true,
+                        title: "Edit Client",
+                        type: (
+                          ()=>{
+                            if(props.activeTab === "ACTIVE") {
+                              return 'active-edit'
+                            }
+                            if(props.activeTab === "INACTIVE") {
+                              return 'inactive-edit'
+                            }
+                            if(props.activeTab === "EXPIRED") {
+                              return 'edit'
+                            }
+                          }
+                        ),
+                        data: {
+                          _id: element._id,
+                          defaultChecked: (
+                            ()=>{
+                              if(props.activeTab === "ACTIVE") {
+                                return true
+                              }
+                              return false
+                            } 
+                          )()
+                        }
+                    })}}/></p>
+                  </Col>
+                  <Col>
+                  <p className='mb-0' ><Trash3 className='delete' onClick={()=>{
+                    handleModal({
+                      visibility: true,
+                      title: "Delete Client",
+                      type: "delete",
+                      data: {
+                        _id: element._id
+                      }
+                    })}}/></p>
+                  </Col>
+                </Row>
+              </td>}
+            </tr>
+          }) : <tr>
+            <td colSpan={7}>
+              <div style={{textAlign: "center"}}>
+                No data to display
+              </div>
+            </td>
+          </tr>}
         </tbody>
         </Table>
       </div>
@@ -138,7 +218,7 @@ const TabelSection = () => {
       <Pagination>{showPageItemsFunction()}</Pagination>
       </div>
     </footer>
-    <Modal show={show} setShow={setShow} title={title} type={type}/>
+    <Modal show={show} setShow={setShow} title={title} type={type} data={data} setMessage={props.setMessage} handleShow={props.handleShow} setModalFetch={props.setModalFetch}/>
     </div>
   )
 }
