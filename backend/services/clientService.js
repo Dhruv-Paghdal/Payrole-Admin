@@ -117,7 +117,7 @@ exports.clientList = async(req, res) => {
         }]
         const clients = await Client.aggregate(pipeline);
         if (!clients.length) {
-            return res.status(400).json({staus:200, message: "No client List", data: clients})  
+            return res.status(200).json({staus:200, message: "No client List", data: clients})  
         }
         return res.status(200).json({staus: 200, message: "Client list successful", data: [{page: page.toString()+" of "+ totalPage.toString(), list:clients}]})
     } catch (error) {
@@ -201,7 +201,7 @@ exports.addClient = async(req, res) => {
             isAdmin: true
         }
         const newClient = await Client.insertOne(clientData); 
-        const updateCompany = await Company.updateOne(company._id, {clientID: newClient._id, startDate: newClient.subscriptionStart, endDate: newClient.subscriptionEnd, subscriptionHistory: clientData.subscriptionHistory});
+        const updateCompany = await Company.updateOne(company._id, {clientID: newClient._id, startDate: newClient.subscriptionStart, endDate: newClient.subscriptionEnd, subscriptionHistory: clientData.subscriptionHistory, email: newClient.companyEmail});
         if (!newClient || !updateCompany) {
             await Company.deleteOne(company._id)
             return res.status(400).json({staus:400, message: "Error while adding client", data: ""})  
