@@ -22,7 +22,7 @@ const  Sidebar = () => {
         <ListGroup>
           <ListGroup.Item className='item'>
             <div>
-              <Link to="/" onClick={()=>{localStorage.removeItem("token")}}><BoxArrowLeft fontSize={16} /> Logout</Link>
+              <Link to="/Payrole-Admin/" onClick={()=>{localStorage.removeItem("token")}}><BoxArrowLeft fontSize={16} /> Logout</Link>
             </div>
           </ListGroup.Item>
         </ListGroup>
