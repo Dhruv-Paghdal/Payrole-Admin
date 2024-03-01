@@ -9,13 +9,13 @@ import ErrorPage from "./components/errorPage";
 
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: "/Payrole-Admin/",
     element: <Login />,
     errorElement: <ErrorPage />
     
   },
   {
-    path: "/dashboard",
+    path: "/Payrole-Admin/dashboard",
     element: <Layout />,
   },
 ]);
