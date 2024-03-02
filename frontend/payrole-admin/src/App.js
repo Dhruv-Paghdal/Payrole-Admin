@@ -9,16 +9,20 @@ import ErrorPage from "./components/errorPage";
 
 const router = createBrowserRouter([
   {
-    path: "/Payrole-Admin/",
+    // path: "/Payrole-Admin/",
+    path: "/",
     element: <Login />,
     errorElement: <ErrorPage />
     
   },
   {
-    path: "/Payrole-Admin/dashboard",
+    path: "/dashboard",
+    // path: "/Payrole-Admin/dashboard",
     element: <Layout />,
   },
-]);
+], {
+  basename: "/Payrole-Admin"
+});
 
 function App() {
   return (

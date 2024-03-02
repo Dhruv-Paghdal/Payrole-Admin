@@ -12,6 +12,7 @@ const ErrorPage = () => {
                 <Card.Text>
                     The page you are attempting to access does not exist at the moment. 
                 </Card.Text>
+                {/* <Link to="/Payrole-Admin/" onClick={()=>{localStorage.removeItem("token")}}><Button className='w-100 submitButton'>Home</Button></Link> */}
                 <Link to="/" onClick={()=>{localStorage.removeItem("token")}}><Button className='w-100 submitButton'>Home</Button></Link>
             </Card.Body>
         </Card>

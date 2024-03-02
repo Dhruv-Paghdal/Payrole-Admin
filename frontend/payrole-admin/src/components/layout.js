@@ -23,7 +23,8 @@ const Layout = () => {
   })
   useEffect(()=>{
     if (!localStorage.getItem("token")) {
-      navigate("/Payrole-Admin/")
+      // navigate("/Payrole-Admin/")
+      navigate("/")
     }
   }, []);
 
