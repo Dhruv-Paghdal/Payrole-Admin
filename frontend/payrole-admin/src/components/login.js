@@ -29,7 +29,8 @@ const Login = () => {
         }
         else {
             localStorage.setItem("token", data);
-            navigate("/Payrole-Admin/dashboard");
+            // navigate("/Payrole-Admin/dashboard");
+            navigate("/dashboard");
         }
     }
     return (
